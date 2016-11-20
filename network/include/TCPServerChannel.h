@@ -8,11 +8,12 @@
 #include "TCPConnection.h"
 #include "TCPServerSocket.h"
 #include <functional>
+#include <atomic>
 
 class TCPServerChannel {
 private:
     TCPServerSocket *socket;
-    bool term;
+    std::atomic<bool> term;//using the c++ api for atomic, not test yet if it really work(hope so)
     int queueSize, t_sec, t_mil, rsize, wsize;
     TCPConnection::Address address;
     SessionHandler handler;
@@ -21,8 +22,14 @@ private:
                      const SessionHandler &handler);
 
 public:
+    /**
+     * The handler for each client connection.
+     * */
     using SessionHandler =  std::function<void(TCPConnection *)>;
 
+    /**
+     * Create server by this method.
+     * */
     static TCPServerChannel *createServer(TCPConnection::Address &address, SessionHandler handler, int queueSize);
 
     TCPServerChannel &setTimeout(int second, int mill);
@@ -39,10 +46,21 @@ public:
 
     int getWriteBufferSize() const;
 
+    /**
+     * Start the server, notice that this is a blocking function, it's inf loop until someone call
+     * @fn TCPServerChannel::terminated from other thread.
+     * @return if the server start successfully. (false means fails and error.)
+     * */
     bool start();
 
+    /**
+     * Check if this server is done, called from several threads. So this is atomic.
+     * */
     bool isTerminated();
 
+    /**
+     * Terminate the server, called from several threads. So this is atomic.
+     * */
     void terminate();
 };
 

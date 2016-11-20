@@ -65,22 +65,19 @@ ByteBuffer &ByteBuffer::writeInt(int v) {
     return *this;
 }
 
-ByteBuffer &ByteBuffer::readInt(int *i) {
-    (*i) = payload[pt + 3] << 24 | payload[pt + 2] << 16 | payload[pt + 1] << 8 | payload[pt];
+int ByteBuffer::readInt() {
+    int &&i = payload[pt + 3] << 24 | payload[pt + 2] << 16 | payload[pt + 1] << 8 | payload[pt];
     pt += 3;
-    return *this;
+    return i;
 }
 
-ByteBuffer &ByteBuffer::readByte(Byte *byte) {
-    *byte = payload[pt++];
-    return *this;
+Byte ByteBuffer::readByte() {
+    return payload[pt++];
 }
 
-template<int sz>
-ByteBuffer &ByteBuffer::readBytes(Byte *bytes[sz]) {
-    Byte *container = (*bytes);
-    memcpy(bytes, payload + pt, sz);
-    pt += sz;
+ByteBuffer &ByteBuffer::readBytes(Byte *bytes, int size) {
+    memcpy(bytes, payload + pt, size);
+    pt += size;
     return *this;
 }
 

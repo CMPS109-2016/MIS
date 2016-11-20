@@ -4,7 +4,6 @@
 
 #include "TCPServerChannel.h"
 
-
 TCPServerChannel *
 TCPServerChannel::createServer(TCPConnection::Address &address, SessionHandler handler, int queueSize) {
     TCPServerSocket *sock = new TCPServerSocket(address.host.c_str(), address.port, queueSize);
@@ -32,7 +31,6 @@ bool TCPServerChannel::isTerminated() {
 }
 
 void TCPServerChannel::terminate() {
-    //add lock
     term = true;
 }
 

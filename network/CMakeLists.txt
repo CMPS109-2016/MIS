@@ -11,7 +11,9 @@ set(SOURCE_FILES
         include/TCPConnection.h
         TCPConnection.cpp
         ByteBuffer.cpp
-        TCPServerChannel.cpp include/TCPServerChannel.h Message.cpp include/Message.h AsyncSessionHandler.cpp AsyncSessionHandler.h)
+        TCPServerChannel.cpp include/TCPServerChannel.h Message.cpp include/Message.h AsyncSessionHandler.cpp
+        include/AsyncSessionHandler.h
+        TestByteBuffer.cpp)
 #target_link_libraries(network socket)
 
 add_executable(network ${SOURCE_FILES})

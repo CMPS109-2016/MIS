@@ -8,8 +8,9 @@
 #include <cstdlib>
 #include <string>
 
-typedef unsigned char Byte;
+typedef char Byte;
 
+//this class is not tested yet.
 class ByteBuffer {
     Byte *payload;
     size_t cap;
@@ -23,26 +24,43 @@ public:
 
     virtual ~ByteBuffer();
 
+    /**
+     * Write a byte array into this buffer.
+     */
     ByteBuffer &writeBytes(const Byte *v, int size);
 
+    /**
+    * Write a byte into this buffer.
+    */
     ByteBuffer &writeByte(Byte v);
 
+    /**
+    * Write a int into this buffer.
+    */
     ByteBuffer &writeInt(int v);
 
+    /**
+     * Reset the pointer into the 0.
+     * */
     void flip();
 
+    /**
+     * The capacity of the buffer, might grow if we keep putting bytes into it.
+     * */
     size_t capacity();
 
+    /**
+     * The size of the bytes already been buffered.
+     * */
     int size();
 
     int remain();
 
-    ByteBuffer &readInt(int *i);
+    int readInt();
 
-    ByteBuffer &readByte(Byte *byte);
+    Byte readByte();
 
-    template<int sz>
-    ByteBuffer &readBytes(Byte *bytes[sz]);
+    ByteBuffer &readBytes(Byte *bytes, int size);//dont really know if this will work
 
     const Byte *data();
 };
